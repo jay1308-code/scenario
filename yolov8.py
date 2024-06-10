@@ -2,10 +2,7 @@ import streamlit as st
 import time
 import uuid
 from ultralytics import YOLO
-from PIL import Image
-import numpy as np
 import tempfile
-import streamlit as st
 import os
 
 # Load the YOLO model
@@ -29,20 +26,13 @@ outdoor_items = [
 
 def save_results(result, timestamp, unique_id, context, person_detected):
     if context == 'indoor':
-        if person_detected:
-            folder = "indoor_person"
-        else:
-            folder = "indoor"
+        folder = "indoor_person" if person_detected else "indoor"
     elif context == 'outdoor':
-        if person_detected:
-            folder = "outdoor_person"
-        else:
-            folder = "outdoor"
+        folder = "outdoor_person" if person_detected else "outdoor"
     
     os.makedirs(folder, exist_ok=True)
     filename = f"{folder}/result_{timestamp}_{unique_id}.jpg"
     result.save(filename=filename)
-    # st.image(filename, caption=f"Saved {context} {'person' if person_detected else 'object'} result")
     print(f"Saved {context} {'person' if person_detected else 'object'} result to {filename}")
 
 # Streamlit app
@@ -60,7 +50,7 @@ if uploaded_file is not None:
     st.video(tfile.name)  # Display the uploaded video
     
     # Run the YOLO model on the uploaded video
-    results = model.predict(source=tfile.name, conf=0.50) # if want to see the results (show=True)
+    results = model.predict(source=tfile.name, conf=0.50)
     
     for result in results:
         unique_id = str(uuid.uuid4())
