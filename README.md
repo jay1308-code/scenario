@@ -11,6 +11,7 @@ Ensure you have Python installed. Then, install the necessary dependencies using
 Running the App
 Save the provided script as yolov8.py.
 Run the Streamlit app using the following command:
+
 2-streamlit run yolov8.py
 
 Once the app is running, upload a video file (supported formats: mp4, avi, mov).
